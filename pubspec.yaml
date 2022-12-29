@@ -36,6 +36,12 @@ dependencies:
   cupertino_icons: ^1.0.2
   google_fonts: ^3.0.1
   flutter_svg: ^1.1.6
+  firebase_core: ^2.4.0
+  firebase_auth: ^4.2.3
+  provider: ^6.0.5
+  cloud_firestore: ^4.3.0
+  flutter_pw_validator: ^1.5.0
+  wc_form_validators: ^1.0.0
 
 dev_dependencies:
   flutter_test:
@@ -68,7 +74,8 @@ flutter:
     - assets/svgfiles/little_frame.svg
     - assets/svgfiles/turkey.svg
     - assets/svgfiles/frame2.svg
-    - assets/svgfiles/checkbox.svg
+    - assets/svgfiles/left-arrow.svg
+    - assets/svgfiles/signOutSvg.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

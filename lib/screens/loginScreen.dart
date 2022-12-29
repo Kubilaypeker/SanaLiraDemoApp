@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:sanalira/authenticationService.dart';
+import 'package:sanalira/main.dart';
+import 'package:sanalira/authenticationService.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter_pw_validator/flutter_pw_validator.dart';
+import 'package:wc_form_validators/wc_form_validators.dart'; // for password validation
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -10,9 +17,17 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+
+  final TextEditingController name = TextEditingController();
+  final TextEditingController surname = TextEditingController();
+  final TextEditingController email = TextEditingController();
+  final TextEditingController password = TextEditingController();
+  final TextEditingController countryCode = TextEditingController(text: "+90"); // +90 is for Turkey as a default
+  final TextEditingController phoneNumber = TextEditingController();
+
   bool agree = false; // check for terms agreement
 
-  void _agreementcheck() { // check for terms agreement
+  void agreementCheck() { // check for terms agreement
   agree = true;
   }
 
@@ -28,7 +43,6 @@ class _LoginScreenState extends State<LoginScreen> {
     final Widget littleFrame = SvgPicture.asset(littleFrameSvg);
     final Widget turkeySvg = SvgPicture.asset(turkey);
     final Widget frame2 = SvgPicture.asset(frame2Svg);
-    final Widget checkBox = SvgPicture.asset(checkBoxSvg);
 
 
     return Stack(
@@ -47,7 +61,7 @@ class _LoginScreenState extends State<LoginScreen> {
           appBar: AppBar(
             backgroundColor: Colors.white.withOpacity(0),
             elevation: 0,
-            toolbarHeight: MediaQuery.of(context).size.height/4,
+            toolbarHeight: MediaQuery.of(context).size.height/6,
             centerTitle: true,
             title: Wrap(
               spacing: 20,
@@ -112,10 +126,19 @@ class _LoginScreenState extends State<LoginScreen> {
                         color: Colors.white.withOpacity(0),
                         elevation: 0,
                         child: TextFormField(
+                          style: GoogleFonts.inter(fontSize: 12, color: Colors.white),
+                          controller: name,
                             decoration: InputDecoration(
+                              border: InputBorder.none,
                                 hintText: "Eşref IBAN",
                                 hintStyle: GoogleFonts.inter(color: Colors.white,fontSize: 12,)
-                            )
+                            ),
+                          validator: Validators.compose( // to get valid name
+                              [
+                                Validators.minLength(3  , "En az 3 karakter giriniz."),
+                                Validators.maxLength(50, "En fazla 50 karakter giriniz.")
+                              ]
+                          ),
                         ),
                       ),
                     ),
@@ -125,7 +148,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Text("Soyad",
-                    style: GoogleFonts.inter(color: Color.fromRGBO(207, 212, 222, 1),fontSize: 10),
+                    style: GoogleFonts.inter(color: const Color.fromRGBO(207, 212, 222, 1),fontSize: 10),
                   ),
                 ),
                 Stack(
@@ -140,20 +163,28 @@ class _LoginScreenState extends State<LoginScreen> {
                         color: Colors.white.withOpacity(0),
                         elevation: 0,
                         child: TextFormField(
+                            style: GoogleFonts.inter(fontSize: 12, color: Colors.white),
+                            controller: surname,
                             decoration: InputDecoration(
+                                border: InputBorder.none,
                                 hintText: "Yaşa",
                                 hintStyle: GoogleFonts.inter(color: Colors.white,fontSize: 12,)
-                            )
+                            ),
+                          validator: Validators.compose( // to get valid surname
+                              [
+                                Validators.minLength(3  , "En az 3 karakter giriniz."),
+                                Validators.maxLength(50, "En fazla 50 karakter giriniz.")
+                              ]
+                          ),
                         ),
                       ),
                     ),
-
                   ],
                 ),
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Text("E-posta",
-                    style: GoogleFonts.inter(color: Color.fromRGBO(207, 212, 222, 1),fontSize: 10),
+                    style: GoogleFonts.inter(color: const Color.fromRGBO(207, 212, 222, 1),fontSize: 10),
                   ),
                 ),
                 Stack(
@@ -168,10 +199,59 @@ class _LoginScreenState extends State<LoginScreen> {
                         color: Colors.white.withOpacity(0),
                         elevation: 0,
                         child: TextFormField(
+                            style: GoogleFonts.inter(fontSize: 12, color: Colors.white),
+                            controller: email,
                             decoration: InputDecoration(
+                                border: InputBorder.none,
                                 hintText: "esrefyasa@monegon.com",
                                 hintStyle: GoogleFonts.inter(color: Colors.white,fontSize: 12,)
-                            )
+                            ),
+                          validator: Validators.compose( // to get valid e-mail
+                              [
+                                Validators.required('E-mail giriniz.'),
+                                Validators.email("Lütfen geçerli bir E-posta adresi giriniz."),
+                              ]
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Text("Şifre",
+                    style: GoogleFonts.inter(color: const Color.fromRGBO(207, 212, 222, 1),fontSize: 10),
+                  ),
+                ),
+                Stack(
+                  children: <Widget>[
+                    Container(
+                      child: frame,
+                      padding: const EdgeInsets.only(left: 20, top: 6),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 27,),
+                      child: Card(
+                        color: Colors.white.withOpacity(0),
+                        elevation: 0,
+                        child: TextFormField(
+
+                          obscureText: true,
+                            style: GoogleFonts.inter(fontSize: 12, color: Colors.white),
+                            controller: password,
+                            decoration: InputDecoration(
+                                border: InputBorder.none,
+                                hintText: "Şifre",
+                                hintStyle: GoogleFonts.inter(color: Colors.white,fontSize: 12,)
+                            ),
+                          validator: Validators.compose( // to get valid password
+                              [
+                            Validators.required('Password is required'),
+                            Validators.patternString(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$', 'Invalid Password'),
+                            Validators.minLength(6  , "En az 6 karakter giriniz."),
+                            Validators.maxLength(20, "En fazla 20 karakter giriniz.")
+                          ]
+                          ),
                         ),
                       ),
                     ),
@@ -180,7 +260,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Text("Cep Telefonu Numaranız",
-                    style: GoogleFonts.inter(color: Color.fromRGBO(207, 212, 222, 1),fontSize: 10),
+                    style: GoogleFonts.inter(color: const Color.fromRGBO(207, 212, 222, 1),fontSize: 10),
                   ),
                 ),
                 Row(
@@ -202,10 +282,14 @@ class _LoginScreenState extends State<LoginScreen> {
                             color: Colors.white.withOpacity(0),
                             elevation: 0,
                             child: TextFormField(
+                                style: GoogleFonts.inter(fontSize: 12, color: Colors.white),
+                                keyboardType: TextInputType.number,
+                                controller: countryCode,
                                 decoration: InputDecoration(
+                                    border: InputBorder.none,
                                     hintText: "+90",
-                                    hintStyle: GoogleFonts.inter(color: Colors.white,fontSize: 13,)
-                                )
+                                    hintStyle: GoogleFonts.inter(color: Colors.white,fontSize: 13,),
+                                ),
                             ),
                           ),
                         ),
@@ -224,10 +308,19 @@ class _LoginScreenState extends State<LoginScreen> {
                             color: Colors.white.withOpacity(0),
                             elevation: 0,
                             child: TextFormField(
-                                decoration: InputDecoration(
-                                    hintText: "(___) ___ __ __ ",
-                                    hintStyle: GoogleFonts.inter(color: Colors.white,fontSize: 13,)
-                                )
+                              decoration: const InputDecoration(
+                                border: InputBorder.none,
+                              ),
+                              style: GoogleFonts.inter(fontSize: 13, color: Colors.white),
+                              controller: phoneNumber,
+                              keyboardType: TextInputType.number,
+                              validator: Validators.compose( // to get valid phone number
+                                  [
+                                    Validators.required('Lütfen telefon numarası giriniz.'),
+                                    Validators.minLength(10  , "Lütfen geçerli bir telefon numarası giriniz."),
+                                    Validators.maxLength(10, "Lütfen geçerli bir telefon numarası giriniz.")
+                                  ]
+                              ),
                             ),
                           ),
                         ),
@@ -248,7 +341,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             onChanged: (value) {
                               setState(() {
                                 agree = value ?? false;
-                              });
+                              }
+                              );
                             },
                           ),
                         ),
@@ -275,14 +369,24 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   child: TextButton(
                     child: const Text("Giriş Yap"),
-                    onPressed: agree ? _agreementcheck : null,
+                    onPressed: agree ? () { // checking out the agreement of terms.
+                      FirebaseAuth.instance.createUserWithEmailAndPassword(email: email.text, password: email.text).then((value) {print("Hesabınız Oluşturuldu!");
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => AuthenticationWrapper()));
+                      }).onError((error, stackTrace) {
+                        print("Error ${error.toString()}"
+                        );
+                      }
+                      );
+                    }
+                    :null, // to make button disabled unless agree with terms and conditions.
                     style: TextButton.styleFrom(
                       backgroundColor: const Color.fromRGBO(102, 204, 120, 1),
                       primary: const Color.fromARGB(255, 255, 255, 255),
                       textStyle: GoogleFonts.inter(fontSize: 15, fontWeight: FontWeight.bold),
                     ),
                   ),
-            ),
+                ),
               ]
             )
           ),
