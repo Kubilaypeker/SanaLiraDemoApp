@@ -42,6 +42,7 @@ dependencies:
   cloud_firestore: ^4.3.0
   flutter_pw_validator: ^1.5.0
   wc_form_validators: ^1.0.0
+  clipboard: ^0.1.3
 
 dev_dependencies:
   flutter_test:
@@ -76,6 +77,9 @@ flutter:
     - assets/svgfiles/frame2.svg
     - assets/svgfiles/left-arrow.svg
     - assets/svgfiles/signOutSvg.svg
+    - assets/svgfiles/settings.svg
+    - assets/svgfiles/bell.svg
+    - assets/pngfiles/copy.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

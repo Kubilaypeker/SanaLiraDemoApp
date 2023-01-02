@@ -17,7 +17,7 @@ Future<void> main() async {
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown] // to portrait vertical
   );
-  runApp( SanaLiraDemoApp());
+  runApp(SanaLiraDemoApp());
 }
 
 class SanaLiraDemoApp extends StatelessWidget {
@@ -40,7 +40,7 @@ class SanaLiraDemoApp extends StatelessWidget {
   }
 }
 
-class AuthenticationWrapper extends StatelessWidget {
+class AuthenticationWrapper extends StatelessWidget { // to check user signed in before or not
   @override
   Widget build(BuildContext context) {
     final firebaseUser = context.watch<User?>();

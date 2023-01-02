@@ -27,7 +27,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   bool agree = false; // check for terms agreement
 
-  void agreementCheck() { // check for terms agreement
+  void agreementCheck() { // check for terms agreement to get available sign in button
   agree = true;
   }
 
