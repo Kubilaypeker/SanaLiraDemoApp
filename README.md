@@ -1,16 +1,8 @@
-# sanalira
+### SanaLira
 
-Sanalira Test App
+Sanalira Demo App
 
-## Getting Started
+### Screenshots
 
-This project is a starting point for a Flutter application.
+<img src="/sanaliraScreenshorts/Screenshot_2023-01-02-12-14-57-284_com.sanaliratest.sanalira.jpg" width= 200/> <img src="/sanaliraScreenshorts/Screenshot_2023-01-02-12-16-01-500_com.sanaliratest.sanalira.jpg" width= 200/> <img src="/sanaliraScreenshorts/Screenshot_2023-01-02-12-19-45-711_com.sanaliratest.sanalira.jpg" width= 200/> <img src="/sanaliraScreenshorts/Screenshot_2023-01-02-12-14-39-313_com.sanaliratest.sanalira.jpg" width= 200/> <img src="/sanaliraScreenshorts/Screenshot_2023-01-02-12-14-44-650_com.sanaliratest.sanalira.jpg" width= 200/>
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
